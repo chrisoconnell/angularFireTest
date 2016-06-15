@@ -1,9 +1,6 @@
 <h1>{{title}}</h1>
 
-<h2>Add Hero</h2>
-<input type="number" #newid placeholder="id"/>
-<input type="text" #newname placeholder="name"/>
-<button (click)="add(newid.value, newname.value)">Add</button>
+<add-hero></add-hero>
 
 <hero-list (selectedHero)="setSelectedHero($event)"></hero-list>
 

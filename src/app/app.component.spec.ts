@@ -5,7 +5,7 @@ import {
   it,
   inject
 } from '@angular/core/testing';
-import { AngularFireTestAppComponent } from '../app/angular-fire-test.component';
+import { AngularFireTestAppComponent } from '../app/app.component';
 
 beforeEachProviders(() => [AngularFireTestAppComponent]);
 

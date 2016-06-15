@@ -7,8 +7,8 @@ import { Hero } from './hero';
 @Component({
   moduleId: module.id,
   selector: 'app',
-  templateUrl: 'angular-fire-test.component.html',
-  styleUrls: ['angular-fire-test.component.css'],
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css'],
   directives: [HeroListComponent, HeroDetailsComponent, AddHeroComponent]
 })
 export class AngularFireTestAppComponent {

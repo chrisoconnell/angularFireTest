@@ -18,15 +18,9 @@ export class HeroListComponent implements OnInit {
   constructor(private heroService: HeroService) {}
 
   ngOnInit() {
-    this.heroService.getAuth().subscribe(auth => this.auth = auth);
-    this.login();
     this.getHeroes();
   }
-
-  login() {
-    this.heroService.login().catch(error => console.log(error, 'You do not have access!'));
-  }
-
+  
   getHeroes() {
     this.heroes = this.heroService.getHeroes();
   }

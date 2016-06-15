@@ -6,6 +6,14 @@ import { Hero } from './hero';
 export class HeroService {
   constructor(private angularFire: AngularFire) {}
 
+  getAuth() {
+    return this.angularFire.auth;
+  }
+  
+  login() {
+    return this.angularFire.auth.login({email: 'chris@chrisoconnell.info', password: 'ggqnKLfr3$'});
+  }
+
   getHeroes(): FirebaseListObservable<any[]> {
     return this.angularFire.database.list('/hero');
   }

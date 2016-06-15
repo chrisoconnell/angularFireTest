@@ -1,3 +1,6 @@
+<h2>Login uid</h2>
+<div> {{ (auth | async)?.uid }} </div>
+
 <h2>My Heroes</h2>
 <ul>
   <li *ngFor="let hero of heroes| async" (click)="onSelect(hero)" [ngClass]="{selected: selectedHero === hero}">

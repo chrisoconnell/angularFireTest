@@ -12,12 +12,19 @@ import { Hero } from '../hero';
 })
 export class HeroListComponent implements OnInit {
   heroes: FirebaseListObservable<any[]>;
+  auth;
   @Output() selectedHero = new EventEmitter<any>();
 
   constructor(private heroService: HeroService) {}
 
   ngOnInit() {
+    this.heroService.getAuth().subscribe(auth => this.auth = auth);
+    this.login();
     this.getHeroes();
+  }
+
+  login() {
+    this.heroService.login().catch(error => console.log(error, 'You do not have access!'));
   }
 
   getHeroes() {

@@ -25,8 +25,16 @@ export class AddHeroComponent implements OnInit {
   }
 
   addRandom(num: string) {
-    this.randomService.getUsers(parseInt(num)).then(data => {
-      this.heroService.addRandomUsers(data);
-    })
+    var count = 1;
+    var interval = setInterval(() => {
+      this.randomService.getUsers(parseInt(num)).then(data => {
+        this.heroService.addRandomUsers(data);
+      });
+      console.log('send batch ' + count);
+      count++;
+      if (count > 5) {
+        clearInterval(interval);
+      }
+    }, 2000);
   }
 }

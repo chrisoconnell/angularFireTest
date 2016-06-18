@@ -54,6 +54,13 @@ export class HeroService {
     });
   }
 
+  addRandomUsers(data: any) {
+    var users = data.results;
+    users.forEach(user => {
+      this.angularFire.database.list('/user').push(user);
+    });
+  }
+
   private getKeyFromData(data: any): string {
     return data.path.u.pop();
   }

@@ -2,3 +2,7 @@
 <input type="number" #newid placeholder="id"/>
 <input type="text" #newname placeholder="name"/>
 <button (click)="add(newid.value, newname.value)">Add</button>
+<br>
+<h2>Add Random Hero</h2>
+<input type="number" #heronum placeholder="number of heroes"/>
+<button (click)="addRandom(heronum.value)">Add</button>

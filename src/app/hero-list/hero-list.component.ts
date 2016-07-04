@@ -26,6 +26,6 @@ export class HeroListComponent implements OnInit {
   }
 
   onSelect(hero: Hero) {
-    this.selectedHero.next(hero);
+    this.selectedHero.emit(hero);
   }
 }

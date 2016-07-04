@@ -4,6 +4,6 @@ export class AngularFireTestPage {
   }
 
   getParagraphText() {
-    return element(by.css('angular-fire-test-app h1')).getText();
+    return element(by.css('app-root h1')).getText();
   }
 }

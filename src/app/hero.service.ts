@@ -62,7 +62,7 @@ export class HeroService {
   }
 
   private getKeyFromData(data: any): string {
-    return data.path.u.pop();
+    return data.path.toString().split("/").pop();
   }
 
   private getHeroEntry(hero: Hero): Hero {

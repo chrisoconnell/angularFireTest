@@ -7,7 +7,7 @@ import { RandomService } from '../random.service';
   selector: 'add-hero',
   templateUrl: 'add-hero.component.html',
   styleUrls: ['add-hero.component.css'],
-  providers: [HeroService, RandomService]
+  providers: [RandomService]
 })
 export class AddHeroComponent implements OnInit {
 

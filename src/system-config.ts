@@ -1,19 +1,34 @@
+// SystemJS configuration file, see links for more information
+// https://github.com/systemjs/systemjs
+// https://github.com/systemjs/systemjs/blob/master/docs/config-api.md
+
 /***********************************************************************************************
  * User Configuration.
  **********************************************************************************************/
 /** Map relative paths to URLs. */
 const map: any = {
-  'firebase': 'vendor/firebase/lib/firebase-web.js',
+  '@angular2-material': 'vendor/@angular2-material',
+  'firebase': 'vendor/firebase/firebase.js',
   'angularfire2': 'vendor/angularfire2'
 };
 
 /** User packages configuration. */
-const packages: any = {
+const packages:any = {
   angularfire2: {
     defaultExtension: 'js',
     main: 'angularfire2.js'
   }
 };
+
+// put the names of any of your Material components here
+const materialPkgs:string[] = [
+  'core',
+  'slide-toggle',
+];
+
+materialPkgs.forEach((pkg) => {
+  packages[`@angular2-material/${pkg}`] = {main: `${pkg}.js`};
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 /***********************************************************************************************
@@ -35,9 +50,6 @@ const barrels: string[] = [
   // App specific barrels.
   'app',
   'app/shared',
-  'app/hero-list',
-  'app/hero-details',
-  'app/add-hero',
   /** @cli-barrel */
 ];
 

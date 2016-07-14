@@ -21,7 +21,11 @@ export class AddHeroComponent implements OnInit {
 
   add(id: string, name: string) {
     var hero = {id: parseInt(id), name: name};
-    this.heroService.addHero(hero);
+    if (this.heroService.uid) {
+      this.heroService.addHero(hero);
+    } else {
+      console.error('you are not logged in');
+    }
   }
 
   addRandom(num: string) {

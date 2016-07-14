@@ -42,7 +42,7 @@ export class HeroService {
   addHero(hero: Hero) {
     this.resetTimestamp();
 
-    this.getHeroesHistory().push(this.getHistoryEntry()).then(data => {
+    return this.getHeroesHistory().push(this.getHistoryEntry()).then(data => {
       var key = this.getKeyFromData(data);
       this.getHeroHistory(key).push(this.getHeroHistroyEntry(hero)).then(() => {
         hero['history-key'] = key;

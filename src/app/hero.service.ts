@@ -4,14 +4,23 @@ import { Hero } from './hero';
 
 @Injectable()
 export class HeroService {
-  constructor(private angularFire: AngularFire) {}
+  uid: string;
+  timestamp: number;
+
+  constructor(private angularFire: AngularFire) {
+    this.angularFire.auth.subscribe(auth => {
+      if (null !== auth) {
+        this.uid = auth.uid;
+      }
+    });
+  }
 
   getAuth() {
     return this.angularFire.auth;
   }
   
   login() {
-    return this.angularFire.auth.login({email: 'chris@chrisoconnell.info', password: 'ggqnKLfr3$'});
+    return this.angularFire.auth.login({email: 'cao@mac.com', password: 'ggqnKLfr3$'});
   }
 
   getHeroes(): FirebaseListObservable<any[]> {
@@ -31,7 +40,9 @@ export class HeroService {
   }
 
   addHero(hero: Hero) {
-    this.getHeroesHistory().push({history: {}}).then(data => {
+    this.resetTimestamp();
+
+    this.getHeroesHistory().push(this.getHistoryEntry()).then(data => {
       var key = this.getKeyFromData(data);
       this.getHeroHistory(key).push(this.getHeroHistroyEntry(hero)).then(() => {
         hero['history-key'] = key;
@@ -41,12 +52,16 @@ export class HeroService {
   }
 
   updateHero(hero) {
+    this.resetTimestamp();
+
     this.getHeroHistory(hero['history-key']).push(this.getHeroHistroyEntry(hero)).then(() => {
       this.getHero(hero.$key).update(this.getHeroEntry(hero));
     });
   }
 
   deleteHero(hero) {
+    this.resetTimestamp();
+
     var heroHistoryEntry = this.getHeroHistroyEntry(hero);
     heroHistoryEntry.removed = true;
     this.getHeroHistory(hero['history-key']).push(heroHistoryEntry).then(() => {
@@ -69,7 +84,27 @@ export class HeroService {
     return {id: hero.id, name: hero.name};
   }
 
+  private getHistoryEntry() {
+    return {
+      "created-by": this.uid,
+      "created-on": this.getTimestamp(),
+      history: {}
+    };
+  }
+
   private getHeroHistroyEntry(hero: Hero): any {
-    return {data: this.getHeroEntry(hero), uid: 5, timestamp: Date.now()};
+    return {data: this.getHeroEntry(hero), uid: this.uid, timestamp: this.getTimestamp()};
+  }
+
+  private getTimestamp(): number {
+    if (null === this.timestamp) {
+      this.resetTimestamp();
+    }
+
+    return this.timestamp;
+  }
+
+  private resetTimestamp() {
+    this.timestamp = Date.now();
   }
 }

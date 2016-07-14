@@ -1,0 +1,7 @@
+<p>
+  <button (click)="login()" class="btn btn-default">Login</button>
+</p>
+<p>
+  <button (click)="logout()">Logout</button>
+</p>
+<p> UID: {{ (auth | async)?.uid }} </p>

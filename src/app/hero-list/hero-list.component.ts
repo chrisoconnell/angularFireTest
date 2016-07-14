@@ -11,8 +11,8 @@ import { Hero } from '../hero';
   providers: [HeroService]
 })
 export class HeroListComponent implements OnInit {
-  heroes: FirebaseListObservable<any[]>;
-  auth;
+  heroes;
+  notLoggedIn: boolean;
   @Output() selectedHero = new EventEmitter<any>();
 
   constructor(private heroService: HeroService) {}
@@ -22,7 +22,14 @@ export class HeroListComponent implements OnInit {
   }
   
   getHeroes() {
-    this.heroes = this.heroService.getHeroes();
+    this.heroService.getAuth().subscribe(auth => {
+      if (null !== auth) {
+        this.heroes = this.heroService.getHeroes();
+        this.notLoggedIn = false;
+      } else {
+        this.notLoggedIn = true;
+      }
+    });
   }
 
   onSelect(hero: Hero) {

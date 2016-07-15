@@ -27,6 +27,16 @@ export class HeroService {
     return this.angularFire.database.list('/hero');
   }
 
+  getUsers(limit: number, key: string): FirebaseListObservable<any[]> {
+    let query: any = {limitToFirst: limit};
+    if ("" !== key) {
+      query.orderByKey = true;
+      query.startAt = key;
+    }
+
+    return this.angularFire.database.list('/user', {query: query});
+  }
+
   getHero(key: string): FirebaseObjectObservable<any[]> {
     return this.angularFire.database.object('/hero/' + key);
   }

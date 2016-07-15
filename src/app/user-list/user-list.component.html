@@ -1,0 +1,10 @@
+<h2>My Users</h2>
+<div *ngIf="loggedIn">
+  <ul>
+    <li *ngFor="let user of users | async">
+      <span class="badge">{{ user.gender }}</span> {{ user.name.first }} {{ user.name.last }}
+    </li>
+  </ul>
+  <button *ngIf="nextUserKey" (click)="getUsers(nextUserKey)">Next</button>
+</div>
+<p *ngIf="!loggedIn">You must be logged in to see user list</p>

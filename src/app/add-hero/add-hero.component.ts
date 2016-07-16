@@ -28,7 +28,7 @@ export class AddHeroComponent implements OnInit {
     }
   }
 
-  addRandom(num: string) {
+  addRandom(num: string, batch: string) {
     var count = 1;
     var interval = setInterval(() => {
       this.randomService.getUsers(parseInt(num)).then(data => {
@@ -36,7 +36,7 @@ export class AddHeroComponent implements OnInit {
       });
       console.log('send batch ' + count);
       count++;
-      if (count > 5) {
+      if (count > parseInt(batch)) {
         clearInterval(interval);
       }
     }, 2000);

@@ -55,8 +55,7 @@ export class HeroService {
     return this.getHeroesHistory().push(this.getHistoryEntry()).then(data => {
       var key = this.getKeyFromData(data);
       this.getHeroHistory(key).push(this.getHeroHistroyEntry(hero)).then(() => {
-        hero['history-key'] = key;
-        this.getHeroes().push(hero);
+        this.getHero(key).set(hero);
       })
     });
   }
@@ -64,7 +63,7 @@ export class HeroService {
   updateHero(hero) {
     this.resetTimestamp();
 
-    this.getHeroHistory(hero['history-key']).push(this.getHeroHistroyEntry(hero)).then(() => {
+    this.getHeroHistory(hero.$key).push(this.getHeroHistroyEntry(hero)).then(() => {
       this.getHero(hero.$key).update(this.getHeroEntry(hero));
     });
   }
@@ -74,13 +73,13 @@ export class HeroService {
 
     var heroHistoryEntry = this.getHeroHistroyEntry(hero);
     heroHistoryEntry.removed = true;
-    this.getHeroHistory(hero['history-key']).push(heroHistoryEntry).then(() => {
+    this.getHeroHistory(hero.$key).push(heroHistoryEntry).then(() => {
       this.getHeroes().remove(hero.$key);
     });
   }
 
   addRandomUsers(data: any) {
-    var users = data.results;
+    var users: Array<any> = data.results;
     users.forEach(user => {
       this.angularFire.database.list('/user').push(user);
     });

@@ -19,12 +19,15 @@ export class UserListComponent implements OnInit {
   }
 
   getUsers(startKey: string) {
+    this.nextUserKey = "";
     this.heroService.getAuth().subscribe(auth => {
       if (null !== auth) {
         this.users = this.heroService.getUsers(5, startKey);
         this.users.subscribe(data => {
           let lastKey = data.pop().$key;
-          this.heroService.getUsers(2, lastKey).subscribe(data => this.nextUserKey = data[1].$key, error => console.log(error));
+          this.heroService.getNextKey(lastKey).subscribe(data => {
+            this.nextUserKey = data;
+          });
         }, error => console.log(error));
         this.loggedIn = true;
       } else {

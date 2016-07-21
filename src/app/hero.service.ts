@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 import { Hero } from './hero';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class HeroService {
@@ -83,6 +87,17 @@ export class HeroService {
     users.forEach(user => {
       this.angularFire.database.list('/user').push(user);
     });
+  }
+  
+  getNextKey(key: string): Observable<any> {
+    return this.getUsers(2, key)
+      .map(data => {
+        return data.pop().$key;
+      })
+      .catch(error => {
+        console.error(error);
+        return Observable.throw(error);
+      });
   }
 
   private getKeyFromData(data: any): string {

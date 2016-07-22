@@ -6,6 +6,8 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
+declare var firebase : any;
+
 @Injectable()
 export class HeroService {
   uid: string;
@@ -54,8 +56,6 @@ export class HeroService {
   }
 
   addHero(hero: Hero) {
-    this.resetTimestamp();
-
     return this.getHeroesHistory().push(this.getHistoryEntry()).then(data => {
       var key = this.getKeyFromData(data);
       this.getHeroHistory(key).push(this.getHeroHistroyEntry(hero)).then(() => {
@@ -65,16 +65,12 @@ export class HeroService {
   }
 
   updateHero(hero) {
-    this.resetTimestamp();
-
     this.getHeroHistory(hero.$key).push(this.getHeroHistroyEntry(hero)).then(() => {
       this.getHero(hero.$key).update(this.getHeroEntry(hero));
     });
   }
 
   deleteHero(hero) {
-    this.resetTimestamp();
-
     var heroHistoryEntry = this.getHeroHistroyEntry(hero);
     heroHistoryEntry.removed = true;
     this.getHeroHistory(hero.$key).push(heroHistoryEntry).then(() => {
@@ -120,15 +116,8 @@ export class HeroService {
     return {data: this.getHeroEntry(hero), uid: this.uid, timestamp: this.getTimestamp()};
   }
 
+  // Gets timestamp from firebase server. This way clients computer settings won't matter.
   private getTimestamp(): number {
-    if (null === this.timestamp) {
-      this.resetTimestamp();
-    }
-
-    return this.timestamp;
-  }
-
-  private resetTimestamp() {
-    this.timestamp = Date.now();
+    return firebase.database.ServerValue.TIMESTAMP;
   }
 }

@@ -1,0 +1,25 @@
+type Hero {
+    id: Number,
+    name: NameString
+}
+
+type NameString extends String {
+  validate() = this.length > 0 && this.length <= 32;
+}
+
+isUser(uid) = auth != null && auth.uid == uid;
+
+// Anyone can read list of heroes
+path /hero {
+    read() = true;
+}
+
+// Anyone can write new hero
+path /hero/$id is Hero {
+    write() = true;
+}
+
+// Users can only write to hero-history
+path /hero-history {
+    write() = true;
+}

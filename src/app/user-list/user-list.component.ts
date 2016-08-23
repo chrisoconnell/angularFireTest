@@ -22,12 +22,14 @@ export class UserListComponent implements OnInit {
     this.nextUserKey = "";
     this.heroService.getAuth().subscribe(auth => {
       if (null !== auth) {
-        this.users = this.heroService.getUsers(5, startKey);
+        this.users = this.heroService.getRandomUsers(5, startKey);
         this.users.subscribe(data => {
-          let lastKey = data.pop().$key;
-          this.heroService.getNextKey(lastKey).subscribe(data => {
-            this.nextUserKey = data;
-          });
+          if (data.length > 0) {
+            let lastKey = data.pop().$key;
+            this.heroService.getNextKey(lastKey).subscribe(data => {
+              this.nextUserKey = data;
+            });
+          }
         }, error => console.log(error));
         this.loggedIn = true;
       } else {

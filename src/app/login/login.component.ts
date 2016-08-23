@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
   }
 
   setLoggedIn() {
-    this.heroService.getAuth().subscribe(() => this.auth = this.heroService.getAuth());
+    this.heroService.getAuth().subscribe((data) => {
+      this.auth = this.heroService.getAuth();
+      console.log(data.auth);
+    });
   }
 }

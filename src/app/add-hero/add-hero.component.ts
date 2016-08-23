@@ -22,7 +22,9 @@ export class AddHeroComponent implements OnInit {
   add(id: string, name: string) {
     var hero = {id: parseInt(id), name: name};
     if (this.heroService.uid) {
-      this.heroService.addHero(hero);
+      this.heroService.addHero(hero).then(data => {
+        console.log(data);
+      });
     } else {
       console.error('you are not logged in');
     }

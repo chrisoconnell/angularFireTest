@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 import { Hero } from './hero';
+import { User } from './user';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
@@ -33,14 +34,18 @@ export class HeroService {
     return this.angularFire.database.list('/hero');
   }
 
-  getUsers(limit: number, key: string): FirebaseListObservable<any[]> {
+  getUsers(): FirebaseListObservable<User[]> {
+    return this.angularFire.database.list('/user');
+  }
+
+  getRandomUsers(limit: number, key: string): FirebaseListObservable<any[]> {
     let query: any = {limitToFirst: limit};
     if ("" !== key) {
       query.orderByKey = true;
       query.startAt = key;
     }
 
-    return this.angularFire.database.list('/user', {query: query});
+    return this.angularFire.database.list('/random-user', {query: query});
   }
 
   getHero(key: string): FirebaseObjectObservable<any[]> {
@@ -55,11 +60,15 @@ export class HeroService {
     return this.angularFire.database.list('/hero-history/' + key + '/history/');
   }
 
+  getUser(uid) {
+    return this.angularFire.database.object('/user/' + uid);
+  }
+
   addHero(hero: Hero) {
     return this.getHeroesHistory().push(this.getHistoryEntry()).then(data => {
       var key = this.getKeyFromData(data);
       this.getHeroHistory(key).push(this.getHeroHistroyEntry(hero)).then(() => {
-        this.getHero(key).set(hero);
+        return this.getHero(key).set(hero);
       })
     });
   }
@@ -81,12 +90,12 @@ export class HeroService {
   addRandomUsers(data: any) {
     var users: Array<any> = data.results;
     users.forEach(user => {
-      this.angularFire.database.list('/user').push(user);
+      this.angularFire.database.list('/random-user').push(user);
     });
   }
   
   getNextKey(key: string): Observable<any> {
-    return this.getUsers(2, key)
+    return this.getRandomUsers(2, key)
       .map(data => {
         return data.pop().$key;
       })
@@ -106,8 +115,10 @@ export class HeroService {
 
   private getHistoryEntry() {
     return {
-      "created-by": this.uid,
-      "created-on": this.getTimestamp(),
+      created: {
+        by: this.uid,
+        on: this.getTimestamp()
+      },
       history: {}
     };
   }

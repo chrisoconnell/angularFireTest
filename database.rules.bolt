@@ -3,23 +3,60 @@ type Hero {
     name: NameString
 }
 
-type NameString extends String {
-  validate() = this.length > 0 && this.length <= 32;
+type UserLog {
+    by: UserId,
+    on: Timestamp
 }
 
-isUser(uid) = auth != null && auth.uid == uid;
+type HeroHistory {
+    created: UserLog,
+    history: History[]
+}
+
+type History {
+    data: Hero,
+    timestamp: Timestamp,
+    uid: UserId
+}
+
+type Timestamp extends Number {
+    validate() {this == now}
+}
+
+type UserId extends String {
+    validate() {this == auth.uid}
+}
+
+type NameString extends String {
+  validate() {this.length > 0 && this.length <= 32}
+}
+
+isUser(uid) {auth != null && auth.uid == uid}
+isLoggedIn() {auth != null}
 
 // Anyone can read list of heroes
 path /hero {
-    read() = true;
+    read() {isLoggedIn()}
 }
 
 // Anyone can write new hero
-path /hero/$id is Hero {
-    write() = true;
+path /hero/{id} is Hero {
+    write() {isLoggedIn()}
 }
 
 // Users can only write to hero-history
-path /hero-history {
-    write() = true;
+path /hero-history/{id}  is HeroHistory {
+    create() {isLoggedIn()}
+    update() {false}
+    delete() {false}
+}
+
+path /user {
+    read() {isLoggedIn()}
+    write() {isLoggedIn()}
+}
+
+path /random-user {
+    read() {isLoggedIn()}
+    write() {isLoggedIn()}
 }

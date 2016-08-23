@@ -1,4 +1,75 @@
 {
-  ".read": true,
-  ".write": true
+  "rules": {
+    "hero": {
+      ".read": "auth != null",
+      "$id": {
+        ".validate": "newData.hasChildren(['id', 'name'])",
+        "id": {
+          ".validate": "newData.isNumber()"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 32"
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "auth != null"
+      }
+    },
+    "hero-history": {
+      "$id": {
+        ".validate": "newData.hasChildren(['created'])",
+        "created": {
+          ".validate": "newData.hasChildren(['by', 'on'])",
+          "by": {
+            ".validate": "newData.isString() && newData.val() == auth.uid"
+          },
+          "on": {
+            ".validate": "newData.isNumber() && newData.val() == now"
+          },
+          "$other": {
+            ".validate": "false"
+          }
+        },
+        "history": {
+          "$key1": {
+            ".validate": "newData.hasChildren(['data', 'timestamp', 'uid'])",
+            "data": {
+              ".validate": "newData.hasChildren(['id', 'name'])",
+              "id": {
+                ".validate": "newData.isNumber()"
+              },
+              "name": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 32"
+              },
+              "$other": {
+                ".validate": "false"
+              }
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber() && newData.val() == now"
+            },
+            "uid": {
+              ".validate": "newData.isString() && newData.val() == auth.uid"
+            },
+            "$other": {
+              ".validate": "false"
+            }
+          }
+        },
+        "$other": {
+          ".validate": "false"
+        },
+        ".write": "data.val() == null && auth != null"
+      }
+    },
+    "user": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "random-user": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
 }

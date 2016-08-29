@@ -34,14 +34,16 @@ type NameString extends String {
 isUser(uid) {auth != null && auth.uid == uid}
 isLoggedIn() {auth != null}
 
-// Anyone can read list of heroes
+// Only logged in users can read list of heroes
 path /hero {
     read() {isLoggedIn()}
 }
 
-// Anyone can write new hero
+// Only logged in users can create and delete Heroes. Heroes cannot be updated.
 path /hero/{id} is Hero {
-    write() {isLoggedIn()}
+    create() {isLoggedIn()}
+    update() {false}
+    delete() {isLoggedIn()}
 }
 
 // Users can only write to hero-history
@@ -49,6 +51,10 @@ path /hero-history/{id}  is HeroHistory {
     create() {isLoggedIn()}
     update() {false}
     delete() {false}
+}
+
+path /hero-history/{id}/history/{id} {
+    update() {isLoggedIn()}
 }
 
 path /user {

@@ -49,12 +49,8 @@ path /hero/{id} is Hero {
 // Users can only write to hero-history
 path /hero-history/{id}  is HeroHistory {
     create() {isLoggedIn()}
-    update() {false}
-    delete() {false}
-}
-
-path /hero-history/{id}/history/{id} {
     update() {isLoggedIn()}
+    delete() {false}
 }
 
 path /user {
@@ -63,6 +59,10 @@ path /user {
 }
 
 path /random-user {
+    read() {isLoggedIn()}
+}
+
+path /random-user/{uid} {
     read() {isLoggedIn()}
     write() {isLoggedIn()}
 }

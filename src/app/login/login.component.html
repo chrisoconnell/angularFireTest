@@ -1,6 +1,7 @@
 <p>
   <button (click)="login()" class="btn btn-default">Login</button>
 </p>
+<p *ngIf="loginError">There was an error logging in. {{ loginError }}</p>
 <p>
   <button (click)="logout()">Logout</button>
 </p>

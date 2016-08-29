@@ -10,6 +10,7 @@ import { HeroService } from '../hero.service';
 export class LoginComponent implements OnInit {
   auth;
   isLoggedIn: boolean;
+  loginError: any;
 
   constructor(private heroService: HeroService) {}
 
@@ -18,17 +19,16 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.heroService.login();
+    this.heroService.login().catch(error => this.loginError = error);
   }
 
   logout() {
-    this.heroService.getAuth().logout();
+    this.heroService.getAuth().logout()
   }
 
   setLoggedIn() {
     this.heroService.getAuth().subscribe((data) => {
       this.auth = this.heroService.getAuth();
-      console.log(data.auth);
     });
   }
 }
